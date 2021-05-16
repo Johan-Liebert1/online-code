@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { unpkgPathPlugin } from "./plugins/unpackagePathPlugins";
 import * as esbuild from "esbuild-wasm";
 import { fetchPlugin } from "./plugins/fetch-plugin";
+import CodeEditor from "./components/CodeEditor";
 
 const App = () => {
 	const bundlerRef = useRef<any>();
 	const iframeRef = useRef<any>();
 
 	const [input, setInput] = useState("");
-	const [code, setCode] = useState("");
 
 	const startService = async () => {
 		bundlerRef.current = await esbuild.startService({
@@ -19,6 +19,8 @@ const App = () => {
 
 	const transpileCode = async () => {
 		if (!bundlerRef.current) return;
+
+		iframeRef.current.srcdoc = html;
 
 		const result = await bundlerRef.current.build({
 			entryPoints: ["index.js"],
@@ -79,12 +81,17 @@ const App = () => {
 
 	return (
 		<div style={{ margin: "2rem" }}>
-			<textarea value={input} onChange={e => setInput(e.target.value)}></textarea>
+			{/* <textarea value={input} onChange={e => setInput(e.target.value)}></textarea> */}
+			<CodeEditor />
 			<div>
 				<button onClick={transpileCode}>submite</button>
 			</div>
-			<pre>{code}</pre>
-			<iframe ref={iframeRef} sandbox="allow-scripts" srcDoc={html}></iframe>
+			<iframe
+				title="preview"
+				ref={iframeRef}
+				sandbox="allow-scripts"
+				srcDoc={html}
+			></iframe>
 		</div>
 	);
 };
