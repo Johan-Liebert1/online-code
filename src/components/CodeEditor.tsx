@@ -3,7 +3,7 @@ import MonacoEditor, { EditorDidMount } from "@monaco-editor/react";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
 
-import "./CodeEditor.css";
+import "../styles/CodeEditor.css";
 
 interface CodeEditorProps {
 	initialValue: string;
@@ -48,7 +48,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
 			<MonacoEditor
 				editorDidMount={onEditorDidMount}
 				value={initialValue}
-				height="500px"
+				height="100%"
 				language="javascript"
 				theme="dark"
 				options={{

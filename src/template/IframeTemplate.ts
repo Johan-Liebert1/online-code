@@ -1,9 +1,10 @@
-export default `
+const template = `
 <html>
     <head>
         <style>
             body {
                 color: rgb(200, 200, 200);
+                background-color: rgb(14,16,26);
             }
 
             .error {
@@ -37,3 +38,5 @@ export default `
     </body>
 </html>
 `;
+
+export default template;
