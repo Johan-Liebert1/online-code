@@ -5,6 +5,8 @@ import { fetchPlugin } from "./plugins/fetch-plugin";
 
 const App = () => {
 	const bundlerRef = useRef<any>();
+	const iframeRef = useRef<any>();
+
 	const [input, setInput] = useState("");
 	const [code, setCode] = useState("");
 
@@ -29,20 +31,60 @@ const App = () => {
 			}
 		});
 
-		console.log("result = ", result);
-
-		setCode(result.outputFiles[0].text);
+		iframeRef.current.contentWindow.postMessage(result.outputFiles[0].text, "*");
 	};
 
 	useEffect(() => {
 		startService();
 	}, []);
 
+	const html = `
+    <html>
+        <head>
+            <style>
+                body {
+                    color: rgb(200, 200, 200);
+                }
+
+                #error {
+                    background-color: #2C0502;
+                    color: #C54854;
+                }
+            </style> 
+        </head>
+        <body>
+            <div id="root"></div>
+            <div id = "error"></div>
+            <script>
+                window.addEventListener(
+                    "message",
+                    event => {
+                        // event is coming from the parent object and the event has
+                        // some data property
+                        // event.data has the code we're trying to execute
+                        // console.log(event.data)
+                        try {
+                            eval(event.data);
+                        } catch(err) {
+                            document.getElementById('error').innerText = err;
+                            console.error(err);
+                        }
+                    },
+                    false
+                );
+            </script>
+        </body>
+    </html>
+    `;
+
 	return (
 		<div style={{ margin: "2rem" }}>
 			<textarea value={input} onChange={e => setInput(e.target.value)}></textarea>
-			<button onClick={transpileCode}>submite</button>
+			<div>
+				<button onClick={transpileCode}>submite</button>
+			</div>
 			<pre>{code}</pre>
+			<iframe ref={iframeRef} sandbox="allow-scripts" srcDoc={html}></iframe>
 		</div>
 	);
 };

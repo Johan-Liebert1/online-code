@@ -40,8 +40,8 @@ export const fetchPlugin = (inputCode: string) => {
 				const contents = `
                                 const styles = document.createElement('style');
                                 styles.innerText = '${data
-									.replace(/\"/g, '\\"')
-									.replace(/\'/g, "\\'")
+									.replace(/"/g, '\\"')
+									.replace(/'/g, "\\'")
 									.replace(/\n/g, "")}';
                                 document.head.appendChild(styles);
                             `;
