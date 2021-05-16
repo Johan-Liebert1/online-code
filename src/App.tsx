@@ -4,6 +4,8 @@ import * as esbuild from "esbuild-wasm";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import CodeEditor from "./components/CodeEditor";
 
+import "bulmaswatch/superhero/bulmaswatch.min.css";
+
 const App = () => {
 	const bundlerRef = useRef<any>();
 	const iframeRef = useRef<any>();
@@ -82,7 +84,7 @@ const App = () => {
 	return (
 		<div style={{ margin: "2rem" }}>
 			{/* <textarea value={input} onChange={e => setInput(e.target.value)}></textarea> */}
-			<CodeEditor />
+			<CodeEditor initialValue="" onChange={value => setInput(value)} />
 			<div>
 				<button onClick={transpileCode}>submite</button>
 			</div>
