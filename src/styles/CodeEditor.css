@@ -5,7 +5,7 @@ button.button {
 .editor-wrapper {
 	position: relative;
 	height: 100%;
-	width: 70%;
+	width: calc(100% - 10px);
 }
 
 .editor-wrapper .button-format {

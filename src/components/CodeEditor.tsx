@@ -4,6 +4,7 @@ import prettier from "prettier";
 import parser from "prettier/parser-babel";
 
 import "../styles/CodeEditor.css";
+import ResizableComponent from "./ResizableComponent";
 
 interface CodeEditorProps {
 	initialValue: string;
@@ -38,31 +39,33 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
 	};
 
 	return (
-		<div className="editor-wrapper">
-			<button
-				onClick={formatCode}
-				className="button button-format is-primary is-small"
-			>
-				Format
-			</button>
-			<MonacoEditor
-				editorDidMount={onEditorDidMount}
-				value={initialValue}
-				height="100%"
-				language="javascript"
-				theme="dark"
-				options={{
-					wordWrap: "on",
-					minimap: { enabled: false },
-					showUnused: false,
-					folding: false,
-					lineNumbersMinChars: 3,
-					fontSize: 16,
-					scrollBeyondLastLine: false,
-					automaticLayout: true
-				}}
-			/>
-		</div>
+		<ResizableComponent direction="horzontal">
+			<div className="editor-wrapper">
+				<button
+					onClick={formatCode}
+					className="button button-format is-primary is-small"
+				>
+					Format
+				</button>
+				<MonacoEditor
+					editorDidMount={onEditorDidMount}
+					value={initialValue}
+					height="100%"
+					language="javascript"
+					theme="dark"
+					options={{
+						wordWrap: "on",
+						minimap: { enabled: false },
+						showUnused: false,
+						folding: false,
+						lineNumbersMinChars: 3,
+						fontSize: 16,
+						scrollBeyondLastLine: false,
+						automaticLayout: true
+					}}
+				/>
+			</div>
+		</ResizableComponent>
 	);
 };
 
