@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CodeEditor from "./CodeEditor";
 
 import Preview from "./Preview";
@@ -13,6 +13,18 @@ const CodeCell = () => {
 		const output = await bundler(input);
 		setCode(output);
 	};
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			transpileCode();
+		}, 1000);
+
+		return () => {
+			// if we return a function from use effect, then that funciton will
+			// we automaticallly called the next time use effect is called
+			clearTimeout(timer);
+		};
+	}, [input]);
 
 	return (
 		<>
