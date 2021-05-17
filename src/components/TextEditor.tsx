@@ -6,6 +6,7 @@ import "../styles/TextEditor.css";
 
 const TextEditor: React.FC = () => {
 	const [editing, setEditing] = useState(false);
+	const [markdownInput, setMarkdownInput] = useState("# Header");
 
 	const markdownEditor = useRef<HTMLDivElement | null>(null);
 
@@ -30,14 +31,19 @@ const TextEditor: React.FC = () => {
 
 	if (editing) {
 		return (
-			<div ref={markdownEditor}>
-				<MDEditor />
+			<div ref={markdownEditor} className="text-editor">
+				<MDEditor
+					value={markdownInput}
+					onChange={value => setMarkdownInput(value || "")}
+				/>
 			</div>
 		);
 	}
 	return (
-		<div onClick={() => setEditing(true)}>
-			<MDEditor.Markdown source={"# Header"} />
+		<div onClick={() => setEditing(true)} className="text-editor card">
+			<div className="card-content">
+				<MDEditor.Markdown source={markdownInput} />
+			</div>
 		</div>
 	);
 };
