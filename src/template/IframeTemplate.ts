@@ -5,6 +5,7 @@ const template = `
             body {
                 color: rgb(200, 200, 200);
                 background-color: rgb(14,16,26);
+                font-family: Ubuntu Mono;
             }
 
             .error {
@@ -16,6 +17,18 @@ const template = `
     <body>
         <div id="root"></div>
         <script>
+            const handleError = (err) => {
+                let r = document.body;
+                r.classList.add('error');
+                r.innerHTML = '<h1> Runtime Error </h1> <h3>' + err + '<h3>';
+                console.error(err);
+            }
+
+            window.addEventListener('error', (e) => {
+                e.preventDefault();
+                handleError(e.error);
+            })
+
             window.addEventListener(
                 "message",
                 event => {
@@ -26,10 +39,7 @@ const template = `
                     try {
                         eval(event.data);
                     } catch(err) {
-                        let r = document.getElementById('root');
-                        r.classList.add('error');
-                        r.innerText = err;
-                        console.error(err);
+                        handleError(err);
                     }
                 },
                 false

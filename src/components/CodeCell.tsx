@@ -11,7 +11,7 @@ const CodeCell = () => {
 
 	const transpileCode = async () => {
 		const output = await bundler(input);
-		setCode(output);
+		setCode(output.code);
 	};
 
 	useEffect(() => {

@@ -13,8 +13,10 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
 	useEffect(() => {
 		// console.log(code);
 		iframeRef.current.srcdoc = htmlTemplate;
-		iframeRef.current.contentWindow.postMessage(code, "*");
-		console.log("code ran");
+
+		setTimeout(() => {
+			iframeRef.current.contentWindow.postMessage(code, "*");
+		}, 100);
 	}, [code]);
 
 	return (
