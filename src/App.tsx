@@ -1,15 +1,14 @@
 import React from "react";
 
-import CodeCell from "./components/CodeCell";
-
 import "bulmaswatch/superhero/bulmaswatch.min.css";
-import TextEditor from "./components/TextEditor";
+import CellList from "./components/CellList";
 
 const App = () => {
 	return (
 		<div style={{ margin: "2rem" }}>
-			{/* <CodeCell /> */}
-			<TextEditor />
+			<div>
+				<CellList />
+			</div>
 		</div>
 	);
 };
