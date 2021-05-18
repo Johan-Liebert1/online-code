@@ -8,7 +8,7 @@ interface CellListItemProps {
 }
 
 const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
-	return cell.type === "code" ? <CodeCell /> : <TextEditor />;
+	return cell.type === "code" ? <CodeCell cell={cell} /> : <TextEditor cell={cell} />;
 };
 
 export default CellListItem;
