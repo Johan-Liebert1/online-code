@@ -8,14 +8,14 @@ const CellList: React.FC = () => {
 
 	const renderedCells = order.map(cellId => (
 		<Fragment key={cellId}>
-			<AddCell nextCellId={cellId} />
 			<CellListItem cell={data[cellId]} />
+			<AddCell previousCellId={cellId} />
 		</Fragment>
 	));
 
 	return (
 		<div>
-			{renderedCells} <AddCell nextCellId={null} />{" "}
+			<AddCell previousCellId={null} /> {renderedCells}
 		</div>
 	);
 };

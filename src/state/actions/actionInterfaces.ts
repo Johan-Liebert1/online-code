@@ -24,11 +24,29 @@ export interface UpdateCellAction {
 	};
 }
 
-export interface InserCellBeforeAction {
-	type: ActionType.INSERT_CELL_BEFORE;
+export interface InserCellAfterAction {
+	type: ActionType.INSERT_CELL_AFTER;
 	payload: {
 		id: string | null;
 		type: CellTypes;
+	};
+}
+
+export interface BundleStartAction {
+	type: ActionType.BUNDLE_START;
+	payload: {
+		cellId: string;
+	};
+}
+
+export interface BundleCompleteAction {
+	type: ActionType.BUNDLE_COMPLETE;
+	payload: {
+		cellId: string;
+		bundle: {
+			code: string;
+			error: string;
+		};
 	};
 }
 
@@ -36,4 +54,6 @@ export type Action =
 	| MoveCellAction
 	| DeleteCellAction
 	| UpdateCellAction
-	| InserCellBeforeAction;
+	| InserCellAfterAction
+	| BundleStartAction
+	| BundleCompleteAction;
