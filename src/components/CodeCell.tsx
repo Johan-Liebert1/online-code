@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import CodeEditor from "./CodeEditor";
 
 import Preview from "./Preview";
-import bundler from "../bundler/index";
 import ResizableComponent from "./ResizableComponent";
 import { Cell } from "../state/cellInterface";
 import { useActions } from "../hooks/useActions";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 interface CodeCellProps {
 	cell: Cell;
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-	const [code, setCode] = useState("");
+	const { updateCell, createBundle } = useActions();
 
-	const { updateCell } = useActions();
+	const bundle = useTypedSelector(state => state.bundles[cell.id]);
 
 	const transpileCode = async () => {
-		const output = await bundler(cell.content);
-		setCode(output.code);
+		createBundle(cell.id, cell.content);
 	};
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			transpileCode();
-		}, 1000);
+		const timer = setTimeout(transpileCode, 1000);
 
 		return () => {
 			// if we return a function from use effect, then that funciton will
@@ -42,7 +39,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 							initialValue={cell.content}
 							onChange={value => updateCell(cell.id, value)}
 						/>
-						<Preview code={code} />
+						{bundle && <Preview code={bundle.code} error={bundle.error} />}
 					</div>
 					{/* <div>
                             <button onClick={transpileCode} className="button is-success">

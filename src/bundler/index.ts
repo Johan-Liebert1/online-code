@@ -24,11 +24,11 @@ const bundler = async (rawCode: string) => {
 			}
 		});
 
-		return { success: true, code: result.outputFiles[0].text };
+		return { error: "", code: result.outputFiles[0].text };
 	} catch (err) {
 		return {
-			success: false,
-			code: err.message
+			code: "",
+			error: err.message
 		};
 	}
 };

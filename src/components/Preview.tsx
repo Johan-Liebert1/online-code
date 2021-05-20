@@ -5,14 +5,15 @@ import "../styles/Preview.css";
 
 interface PreviewProps {
 	code: string;
+	error: string;
 }
 
-const Preview: React.FC<PreviewProps> = ({ code }) => {
+const Preview: React.FC<PreviewProps> = ({ code, error }) => {
 	const iframeRef = useRef<any>();
 
 	useEffect(() => {
 		// console.log(code);
-		iframeRef.current.srcdoc = htmlTemplate;
+		iframeRef.current.srcdoc = htmlTemplate(error);
 
 		setTimeout(() => {
 			iframeRef.current.contentWindow.postMessage(code, "*");
@@ -25,7 +26,7 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
 				title="preview"
 				ref={iframeRef}
 				sandbox="allow-scripts"
-				srcDoc={htmlTemplate}
+				srcDoc={htmlTemplate(error)}
 			/>
 		</div>
 	);
