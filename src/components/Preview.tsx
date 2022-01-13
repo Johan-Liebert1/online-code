@@ -4,15 +4,15 @@ import htmlTemplate from "../template/IframeTemplate";
 import "../styles/Preview.css";
 
 interface PreviewProps {
-  code: string;
-  error: string;
+  code?: string;
+  error?: string;
 }
 
 const Preview: React.FC<PreviewProps> = ({ code, error }) => {
   const iFrameRef = useRef<null | HTMLIFrameElement>(null);
 
   useEffect(() => {
-    if (!iFrameRef.current) return;
+    if (!iFrameRef.current || !code || error === undefined) return;
 
     iFrameRef.current.srcdoc = htmlTemplate(error);
 
@@ -27,7 +27,7 @@ const Preview: React.FC<PreviewProps> = ({ code, error }) => {
         title="preview"
         ref={iFrameRef}
         sandbox="allow-scripts"
-        srcDoc={htmlTemplate(error)}
+        srcDoc={htmlTemplate(error || "")}
       />
     </div>
   );

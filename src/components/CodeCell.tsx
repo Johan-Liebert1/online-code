@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import CodeEditor from "./CodeEditor";
 
 import Preview from "./Preview";
@@ -14,10 +14,14 @@ interface CodeCellProps {
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const previousCumulativeCode = useRef([""]);
+
   const { updateCell, createBundle } = useActions();
 
   const bundle = useTypedSelector(state => state.bundles[cell.id]);
   const cumulativeCode = useTypedSelector(state => {
+    // console.log(state);
     const { data, order } = state.cells;
 
     const orderedCells = order.map(cellId => data[cellId]);
@@ -25,29 +29,38 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     const cumulativeCode = [];
 
     for (let c of orderedCells) {
-      if (c.type === "code") {
+      // if (c.type === "code") {
+      //   cumulativeCode.push(c.content);
+      // }
+      if (c.id === cell.id) {
         cumulativeCode.push(c.content);
+        break;
       }
-      // if (c.id === cell.id) break;
     }
+
+    // previousCumulativeCode.current = cumulativeCode;
 
     return cumulativeCode;
   });
 
-  const transpileCode = async () => {
+  const transpileCode = useCallback(async () => {
     createBundle(cell.id, cumulativeCode.join("\n"));
-  };
+  }, [createBundle]);
 
   useEffect(() => {
-    const timer = setTimeout(transpileCode, 1500);
+    if (cumulativeCode.join("") === previousCumulativeCode.current.join("")) {
+      if (timer.current) clearTimeout(timer.current);
+      return;
+    } else {
+      previousCumulativeCode.current = cumulativeCode;
+    }
+
+    timer.current = setTimeout(transpileCode, 1500);
 
     return () => {
-      // if we return a function from use effect, then that funciton will
-      // we automaticallly called the next time use effect is called
-      clearTimeout(timer);
+      if (timer.current) clearTimeout(timer.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive/deps
-  }, [cumulativeCode]);
+  }, [cumulativeCode, transpileCode]);
 
   return (
     <ResizableComponent direction="vertical">
@@ -60,12 +73,12 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             />
           </ResizableComponent>
 
-          {!bundle || bundle.loading ? (
+          {bundle?.loading ? (
             <div className="progress-cover">
               <progress className="progress is-small is-primary" max="100"></progress>
             </div>
           ) : (
-            <Preview code={bundle.code} error={bundle.error} />
+            <Preview code={bundle?.code} error={bundle?.error} />
           )}
         </div>
       </div>
