@@ -4,32 +4,33 @@ import htmlTemplate from "../template/IframeTemplate";
 import "../styles/Preview.css";
 
 interface PreviewProps {
-	code: string;
-	error: string;
+  code: string;
+  error: string;
 }
 
 const Preview: React.FC<PreviewProps> = ({ code, error }) => {
-	const iframeRef = useRef<any>();
+  const iFrameRef = useRef<null | HTMLIFrameElement>(null);
 
-	useEffect(() => {
-		// console.log(code);
-		iframeRef.current.srcdoc = htmlTemplate(error);
+  useEffect(() => {
+    if (!iFrameRef.current) return;
 
-		setTimeout(() => {
-			iframeRef.current.contentWindow.postMessage(code, "*");
-		}, 100);
-	}, [code]);
+    iFrameRef.current.srcdoc = htmlTemplate(error);
 
-	return (
-		<div className="preview-wrapper">
-			<iframe
-				title="preview"
-				ref={iframeRef}
-				sandbox="allow-scripts"
-				srcDoc={htmlTemplate(error)}
-			/>
-		</div>
-	);
+    setTimeout(() => {
+      iFrameRef?.current?.contentWindow?.postMessage(code, "*");
+    }, 100);
+  }, [code, error]);
+
+  return (
+    <div className="preview-wrapper">
+      <iframe
+        title="preview"
+        ref={iFrameRef}
+        sandbox="allow-scripts"
+        srcDoc={htmlTemplate(error)}
+      />
+    </div>
+  );
 };
 
 export default Preview;
