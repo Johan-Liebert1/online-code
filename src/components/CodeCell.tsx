@@ -10,80 +10,91 @@ import { useTypedSelector } from "../hooks/useTypedSelector";
 import "../styles/CodeCell.css";
 
 interface CodeCellProps {
-  cell: Cell;
+    cell: Cell;
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const timer = useRef<NodeJS.Timeout | null>(null);
-  const previousCumulativeCode = useRef([""]);
+    const timer = useRef<NodeJS.Timeout | null>(null);
+    const previousCumulativeCode = useRef([""]);
 
-  const { updateCell, createBundle } = useActions();
+    const { updateCell, createBundle } = useActions();
 
-  const bundle = useTypedSelector(state => state.bundles[cell.id]);
-  const cumulativeCode = useTypedSelector(state => {
-    // console.log(state);
-    const { data, order } = state.cells;
+    const codeType = useTypedSelector(state => state.runtime.runtime);
+    const bundle = useTypedSelector(state => state.bundles[cell.id]);
+    const cumulativeCode = useTypedSelector(state => {
+        // console.log(state);
+        const { data, order } = state.cells;
 
-    const orderedCells = order.map(cellId => data[cellId]);
+        const orderedCells = order.map(cellId => data[cellId]);
 
-    const cumulativeCode = [];
+        const cumulativeCode = [];
 
-    for (let c of orderedCells) {
-      // if (c.type === "code") {
-      //   cumulativeCode.push(c.content);
-      // }
-      if (c.id === cell.id) {
-        cumulativeCode.push(c.content);
-        break;
-      }
-    }
+        for (let c of orderedCells) {
+            // if (c.type === "code") {
+            //   cumulativeCode.push(c.content);
+            // }
+            if (c.id === cell.id) {
+                cumulativeCode.push(c.content);
+                break;
+            }
+        }
 
-    // previousCumulativeCode.current = cumulativeCode;
+        // previousCumulativeCode.current = cumulativeCode;
 
-    return cumulativeCode;
-  });
+        return cumulativeCode;
+    });
 
-  const transpileCode = useCallback(async () => {
-    createBundle(cell.id, cumulativeCode.join("\n"));
-  }, [createBundle]);
+    const transpileCode = useCallback(async () => {
+        createBundle(cell.id, cumulativeCode.join("\n"));
+    }, [cumulativeCode, createBundle]);
 
-  useEffect(() => {
-    if (cumulativeCode.join("") === previousCumulativeCode.current.join("")) {
-      if (timer.current) clearTimeout(timer.current);
-      return;
-    } else {
-      previousCumulativeCode.current = cumulativeCode;
-    }
+    const fetchPythonCode = useCallback(() => {
+        createBundle(cell.id, cumulativeCode.join("\n"), "python");
+    }, [cumulativeCode, createBundle]);
 
-    timer.current = setTimeout(transpileCode, 1500);
+    useEffect(() => {
+        if (cumulativeCode.join("") === previousCumulativeCode.current.join("")) {
+            if (timer.current) clearTimeout(timer.current);
+            return;
+        } else {
+            previousCumulativeCode.current = cumulativeCode;
+        }
 
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    };
-  }, [cumulativeCode, transpileCode]);
+        timer.current = setTimeout(
+            codeType === "javascript" ? transpileCode : fetchPythonCode,
+            codeType === "javascript" ? 1500 : 2000
+        );
 
-  return (
-    <ResizableComponent direction="vertical">
-      <div style={{ height: "100%" }}>
-        <div style={{ display: "flex", height: "100%" }}>
-          <ResizableComponent direction="horzontal">
-            <CodeEditor
-              initialValue={cell.content}
-              onChange={value => updateCell(cell.id, value)}
-            />
-          </ResizableComponent>
+        return () => {
+            if (timer.current) clearTimeout(timer.current);
+        };
+    }, [cumulativeCode, transpileCode]);
 
-          {bundle?.loading ? (
-            <div className="progress-cover">
-              <progress className="progress is-small is-primary" max="100"></progress>
+    return (
+        <ResizableComponent direction="vertical">
+            <div style={{ height: "100%" }}>
+                <div style={{ display: "flex", height: "100%" }}>
+                    <ResizableComponent direction="horzontal">
+                        <CodeEditor
+                            initialValue={cell.content}
+                            onChange={value => updateCell(cell.id, value)}
+                        />
+                    </ResizableComponent>
+
+                    {bundle?.loading ? (
+                        <div className="progress-cover">
+                            <progress
+                                className="progress is-small is-primary"
+                                max="100"
+                            ></progress>
+                        </div>
+                    ) : (
+                        <Preview {...bundle} />
+                    )}
+                </div>
             </div>
-          ) : (
-            <Preview code={bundle?.code} error={bundle?.error} />
-          )}
-        </div>
-      </div>
-    </ResizableComponent>
-  );
+        </ResizableComponent>
+    );
 };
 
 export default CodeCell;

@@ -1,8 +1,10 @@
-const template = (error: string) => {
-  const body =
-    error.length > 0
-      ? `<body class="error">${error}</body>`
-      : `<body>
+import { Runtime } from "../types";
+
+const template = (error: string, runtime: Runtime = "javascript") => {
+    const body =
+        error.length > 0
+            ? `<body class="error">${error}</body>`
+            : `<body>
         <div id='root'></div>
         <script defer>
             const originalConsoleLog = console.log;
@@ -36,11 +38,16 @@ const template = (error: string) => {
                     // event is coming from the parent object and the event has
                     // some data property
                     // event.data has the code we're trying to execute
-                    // originalConsoleLog(event.data)
-                    try {
-                        eval(event.data);
-                    } catch(err) {
-                        handleError(err);
+                    // originalConsoleLog({event}, '${runtime}')
+
+                    if ('${runtime}' === 'javascript') {
+                        try {
+                            eval(event.data.code);
+                        } catch(err) {
+                            handleError(err);
+                        }
+                    } else {
+                        console.log(event.data.stdout);
                     }
                 },
                 false
@@ -48,7 +55,7 @@ const template = (error: string) => {
         </script>
     </body>`;
 
-  return `
+    return `
         <html>
             <head>
                 <style>
