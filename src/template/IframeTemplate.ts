@@ -29,6 +29,7 @@ const template = (error: string, runtime: Runtime = "javascript") => {
 
             window.addEventListener('error', (e) => {
                 e.preventDefault();
+                originalConsoleLog('error', e);
                 handleError(e.error);
             })
 
@@ -47,7 +48,11 @@ const template = (error: string, runtime: Runtime = "javascript") => {
                             handleError(err);
                         }
                     } else {
-                        console.log(event.data.stdout);
+                        if (event.data.stderr?.length > 0) {
+                            handleError({ error: event.data.stderr });
+                        } else {
+                            console.log(event.data.stdout);
+                        }
                     }
                 },
                 false
