@@ -1,3 +1,4 @@
+import { Runtime } from "../../types";
 import { ActionType } from "../actionTypes/actionTypes";
 import { CellTypes } from "../cellInterface";
 
@@ -52,10 +53,18 @@ export interface BundleCompleteAction {
     };
 }
 
+export interface ChangeRuntimeAction {
+    type: ActionType.CHANGE_RUNTIME;
+    payload: {
+        runtime: Runtime;
+    };
+}
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
     | UpdateCellAction
     | InserCellAfterAction
     | BundleStartAction
-    | BundleCompleteAction;
+    | BundleCompleteAction
+    | ChangeRuntimeAction;

@@ -86,6 +86,15 @@ export const createBundle =
         });
     };
 
+export const setRuntime = (runtime: Runtime) => (dispatch: Dispatch<Action>) => {
+    dispatch({
+        type: ActionType.CHANGE_RUNTIME,
+        payload: {
+            runtime
+        }
+    });
+};
+
 // export const showPythonOutput = (cellId: string, codeInput: string) => async (dispatch: Dispatch<Action>) => {
 // 	dispatch({
 // 		type: ActionType.BUNDLE_COMPLETE,
