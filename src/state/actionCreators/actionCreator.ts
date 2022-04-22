@@ -64,10 +64,15 @@ export const createBundle =
         if (runtime === "javascript") {
             result = await bundler(codeInput);
         } else {
-            const resp = await fetch("http://localhost:5000/", {
-                method: "POST",
-                body: JSON.stringify({ code: codeInput })
-            });
+            const resp = await fetch(
+                process.env.NODE_ENV === "development"
+                    ? "http://localhost:5000/"
+                    : "https://python-code-executor.herokuapp.com/",
+                {
+                    method: "POST",
+                    body: JSON.stringify({ code: codeInput })
+                }
+            );
 
             const d = await resp.json();
 
