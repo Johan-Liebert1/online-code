@@ -45,11 +45,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     });
 
     const transpileCode = useCallback(async () => {
-        createBundle(cell.id, cumulativeCode.join("\n"));
-    }, [cumulativeCode, createBundle]);
-
-    const fetchPythonCode = useCallback(() => {
-        createBundle(cell.id, cumulativeCode.join("\n"), "python");
+        createBundle(cell.id, cumulativeCode.join("\n"), codeType);
     }, [cumulativeCode, createBundle]);
 
     useEffect(() => {
@@ -61,7 +57,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         }
 
         timer.current = setTimeout(
-            codeType === "javascript" ? transpileCode : fetchPythonCode,
+            transpileCode,
             codeType === "javascript" ? 1500 : 2000
         );
 

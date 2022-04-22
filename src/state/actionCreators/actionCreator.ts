@@ -86,7 +86,7 @@ export const createBundle =
         });
     };
 
-export const setRuntime = (runtime: Runtime) => (dispatch: Dispatch<Action>) => {
+export const setRuntime = (runtime: Runtime) => async (dispatch: Dispatch<Action>) => {
     dispatch({
         type: ActionType.CHANGE_RUNTIME,
         payload: {
