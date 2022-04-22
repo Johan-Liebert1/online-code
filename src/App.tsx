@@ -13,27 +13,16 @@ const App = () => {
     useEffect(() => {
         document.title = "Sandbox JS";
 
-        switch (window.location.pathname) {
-            case "/":
-                window.location.href = "/javascript";
-                break;
-
-            case "/javascript":
-                setRuntime("javascript");
-                document.title = "Sandbox JS";
-                break;
-
-            case "/python":
-                setRuntime("python");
+        switch (runtime) {
+            case "python":
                 document.title = "Sandbox Py";
                 break;
 
-            default:
-                setRuntime("javascript");
+            case "javascript":
                 document.title = "Sandbox JS";
                 break;
         }
-    }, []);
+    }, [runtime]);
 
     return (
         <div style={{ margin: "2rem" }}>
@@ -51,9 +40,7 @@ const App = () => {
                     className="button is-primary"
                     style={{ marginRight: "2rem" }}
                     disabled={runtime === "python"}
-                    onClick={() =>
-                        runtime !== "python" && (window.location.href = "/python")
-                    }
+                    onClick={() => runtime !== "python" && setRuntime("python")}
                 >
                     Python
                 </button>
@@ -61,13 +48,15 @@ const App = () => {
                 <button
                     className="button is-primary"
                     disabled={runtime === "javascript"}
-                    onClick={() =>
-                        runtime !== "javascript" && (window.location.href = "/javascript")
-                    }
+                    onClick={() => runtime !== "javascript" && setRuntime("javascript")}
                 >
                     JavaScript
                 </button>
             </div>
+
+            <h1 style={{ fontSize: "1.5rem", textAlign: "center" }}>
+                {runtime === "python" ? "Python" : "JavaScript"}
+            </h1>
 
             <div>
                 <CellList />
