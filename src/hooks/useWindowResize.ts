@@ -1,32 +1,32 @@
 import { useState, useEffect } from "react";
 
 const useWindowResize = () => {
-	const [windowDims, setWindowDims] = useState<Array<number>>([
-		window.innerWidth,
-		window.innerHeight
-	]);
+    const [windowDims, setWindowDims] = useState<Array<number>>([
+        window.innerWidth,
+        window.innerHeight,
+    ]);
 
-	let timer: any;
+    let timer: any;
 
-	const windowResize = () => {
-		if (timer) {
-			clearTimeout(timer);
-		}
+    const windowResize = () => {
+        if (timer) {
+            clearTimeout(timer);
+        }
 
-		timer = setTimeout(() => {
-			setWindowDims([window.innerWidth, window.innerHeight]);
-		}, 200);
-	};
+        timer = setTimeout(() => {
+            setWindowDims([window.innerWidth, window.innerHeight]);
+        }, 200);
+    };
 
-	useEffect(() => {
-		window.addEventListener("resize", windowResize);
+    useEffect(() => {
+        window.addEventListener("resize", windowResize);
 
-		return () => {
-			window.removeEventListener("resize", windowResize);
-		};
-	}, []);
+        return () => {
+            window.removeEventListener("resize", windowResize);
+        };
+    }, []);
 
-	return windowDims;
+    return windowDims;
 };
 
 export default useWindowResize;

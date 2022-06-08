@@ -25,7 +25,7 @@ const bundlesReducer = produce(
                     code: "",
                     error: "",
                     stdout: "",
-                    stderr: ""
+                    stderr: "",
                 };
                 return state;
             }
@@ -36,7 +36,7 @@ const bundlesReducer = produce(
                     code: action.payload.bundle.code,
                     error: action.payload.bundle.error,
                     stdout: action.payload.stdout,
-                    stderr: action.payload.stderr
+                    stderr: action.payload.stderr,
                 };
                 return state;
             }

@@ -7,7 +7,7 @@ import {
     MoveCellAction,
     UpdateCellAction,
     Direction,
-    Action
+    Action,
 } from "../actions/actionInterfaces";
 import { ActionType } from "../actionTypes/actionTypes";
 import { CellTypes } from "../cellInterface";
@@ -15,21 +15,21 @@ import { CellTypes } from "../cellInterface";
 export const updateCell = (id: string, content: string): UpdateCellAction => {
     return {
         type: ActionType.UPDATE_CELL,
-        payload: { id, content }
+        payload: { id, content },
     };
 };
 
 export const deleteCell = (id: string): DeleteCellAction => {
     return {
         type: ActionType.DELETE_CELL,
-        payload: id
+        payload: id,
     };
 };
 
 export const moveCell = (id: string, direction: Direction): MoveCellAction => {
     return {
         type: ActionType.MOVE_CELL,
-        payload: { id, direction }
+        payload: { id, direction },
     };
 };
 
@@ -39,7 +39,7 @@ export const insertCellAfter = (
 ): InserCellAfterAction => {
     return {
         type: ActionType.INSERT_CELL_AFTER,
-        payload: { id, type }
+        payload: { id, type },
     };
 };
 
@@ -49,13 +49,13 @@ export const createBundle =
         dispatch({
             type: ActionType.BUNDLE_START,
             payload: {
-                cellId
-            }
+                cellId,
+            },
         });
 
         let result = {
             code: "",
-            error: ""
+            error: "",
         };
 
         let stdout = "";
@@ -70,7 +70,7 @@ export const createBundle =
                     : "https://python-code-executor.herokuapp.com/",
                 {
                     method: "POST",
-                    body: JSON.stringify({ code: codeInput })
+                    body: JSON.stringify({ code: codeInput }),
                 }
             );
 
@@ -86,19 +86,20 @@ export const createBundle =
                 cellId,
                 bundle: result,
                 stdout,
-                stderr
-            }
+                stderr,
+            },
         });
     };
 
-export const setRuntime = (runtime: Runtime) => async (dispatch: Dispatch<Action>) => {
-    dispatch({
-        type: ActionType.CHANGE_RUNTIME,
-        payload: {
-            runtime
-        }
-    });
-};
+export const setRuntime =
+    (runtime: Runtime) => async (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.CHANGE_RUNTIME,
+            payload: {
+                runtime,
+            },
+        });
+    };
 
 // export const showPythonOutput = (cellId: string, codeInput: string) => async (dispatch: Dispatch<Action>) => {
 // 	dispatch({

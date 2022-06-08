@@ -7,26 +7,26 @@ import TextEditor from "./TextEditor";
 import "../styles/CellListItem.css";
 
 interface CellListItemProps {
-	cell: Cell;
+    cell: Cell;
 }
 
 const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
-	const toShow: JSX.Element =
-		cell.type === "code" ? (
-			<>
-				<div className="action-bar-wrapper">
-					<ActionBar cellId={cell.id} />
-				</div>
-				<CodeCell cell={cell} />
-			</>
-		) : (
-			<>
-				<TextEditor cell={cell} />
-				<ActionBar cellId={cell.id} />
-			</>
-		);
+    const toShow: JSX.Element =
+        cell.type === "code" ? (
+            <>
+                <div className="action-bar-wrapper">
+                    <ActionBar cellId={cell.id} />
+                </div>
+                <CodeCell cell={cell} />
+            </>
+        ) : (
+            <>
+                <TextEditor cell={cell} />
+                <ActionBar cellId={cell.id} />
+            </>
+        );
 
-	return <div className="cell-list-item">{toShow}</div>;
+    return <div className="cell-list-item">{toShow}</div>;
 };
 
 export default CellListItem;

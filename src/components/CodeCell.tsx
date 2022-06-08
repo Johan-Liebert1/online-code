@@ -19,13 +19,13 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
     const { updateCell, createBundle } = useActions();
 
-    const codeType = useTypedSelector(state => state.runtime.runtime);
-    const bundle = useTypedSelector(state => state.bundles[cell.id]);
-    const cumulativeCode = useTypedSelector(state => {
+    const codeType = useTypedSelector((state) => state.runtime.runtime);
+    const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+    const cumulativeCode = useTypedSelector((state) => {
         // console.log(state);
         const { data, order } = state.cells;
 
-        const orderedCells = order.map(cellId => data[cellId]);
+        const orderedCells = order.map((cellId) => data[cellId]);
 
         const cumulativeCode = [];
 
@@ -49,7 +49,9 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     }, [cumulativeCode, createBundle]);
 
     useEffect(() => {
-        if (cumulativeCode.join("") === previousCumulativeCode.current.join("")) {
+        if (
+            cumulativeCode.join("") === previousCumulativeCode.current.join("")
+        ) {
             if (timer.current) clearTimeout(timer.current);
             return;
         } else {
@@ -73,7 +75,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
                     <ResizableComponent direction="horzontal">
                         <CodeEditor
                             initialValue={cell.content}
-                            onChange={value => updateCell(cell.id, value)}
+                            onChange={(value) => updateCell(cell.id, value)}
                         />
                     </ResizableComponent>
 

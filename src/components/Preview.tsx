@@ -11,10 +11,10 @@ interface PreviewProps {
     stderr?: string;
 }
 
-const Preview: React.FC<PreviewProps> = props => {
+const Preview: React.FC<PreviewProps> = (props) => {
     const { code, error, stdout, stderr } = props;
     const iFrameRef = useRef<null | HTMLIFrameElement>(null);
-    const runtime = useTypedSelector(state => state.runtime.runtime);
+    const runtime = useTypedSelector((state) => state.runtime.runtime);
 
     useEffect(() => {
         if (

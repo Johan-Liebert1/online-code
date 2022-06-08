@@ -6,7 +6,7 @@ import runtimeReducer from "./runtimeReducer";
 const combinedReducers = combineReducers({
     cells: cellsReducer,
     bundles: bundlesReducer,
-    runtime: runtimeReducer
+    runtime: runtimeReducer,
 });
 
 export type RootState = ReturnType<typeof combinedReducers>;

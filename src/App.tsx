@@ -6,7 +6,7 @@ import { useTypedSelector } from "./hooks/useTypedSelector";
 import { useActions } from "./hooks/useActions";
 
 const App = () => {
-    const runtime = useTypedSelector(state => state.runtime.runtime);
+    const runtime = useTypedSelector((state) => state.runtime.runtime);
 
     const { setRuntime } = useActions();
 
@@ -33,7 +33,7 @@ const App = () => {
                     fontSize: "1.5rem",
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
                 }}
             >
                 <button
@@ -48,7 +48,9 @@ const App = () => {
                 <button
                     className="button is-primary"
                     disabled={runtime === "javascript"}
-                    onClick={() => runtime !== "javascript" && setRuntime("javascript")}
+                    onClick={() =>
+                        runtime !== "javascript" && setRuntime("javascript")
+                    }
                 >
                     JavaScript
                 </button>

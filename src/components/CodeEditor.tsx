@@ -14,7 +14,7 @@ interface CodeEditorProps {
 const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     const editorRef = useRef<any>();
 
-    const runtime = useTypedSelector(state => state.runtime.runtime);
+    const runtime = useTypedSelector((state) => state.runtime.runtime);
 
     const onEditorDidMount: EditorDidMount = (getValue, monacoEditorRef) => {
         editorRef.current = monacoEditorRef;
@@ -33,7 +33,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
             parser: "babel",
             plugins: [parser],
             semi: true,
-            singleQuote: false
+            singleQuote: false,
         });
 
         // set formatted value
@@ -64,7 +64,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
                     lineNumbersMinChars: 3,
                     fontSize: 16,
                     scrollBeyondLastLine: false,
-                    automaticLayout: true
+                    automaticLayout: true,
                 }}
             />
         </div>

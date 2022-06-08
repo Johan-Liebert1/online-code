@@ -8,7 +8,7 @@ interface RuntimeInterface {
 }
 
 const initialState: RuntimeInterface = {
-    runtime: "python"
+    runtime: "python",
 };
 
 const runtimeReducer = produce(
